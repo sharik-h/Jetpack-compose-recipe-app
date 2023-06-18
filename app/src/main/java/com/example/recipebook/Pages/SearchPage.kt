@@ -18,10 +18,15 @@ import androidx.compose.material3.SearchBar
 import androidx.compose.ui.graphics.Color
 import com.example.recipebook.CustomComposes.Bubble
 import com.example.recipebook.CustomComposes.HistoryItem
+import com.example.recipebook.CustomComposes.SearchItem
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchPage( onSearch: (String) -> Unit ) {
+fun SearchPage(
+    search: Map<String, String>? = null,
+    onSearch: (String) -> Unit,
+    onSelect: (String) -> Unit
+) {
 
     val srch = remember { mutableStateOf("") }
     val searchHistory = remember { mutableListOf<String>() }
@@ -55,8 +60,17 @@ fun SearchPage( onSearch: (String) -> Unit ) {
                     }
                 }
             ) {
-                searchHistory.reversed().forEach { history ->
-                    HistoryItem(value = history) { srch.value = history }
+                if (srch.value == ""){
+                    searchHistory.reversed().forEach { history ->
+                        HistoryItem(value = history) { srch.value = history }
+                    }
+                }else{
+                    search?.forEach {
+                        SearchItem(value = it.value) {
+                            onSelect(it.key)
+                            state = false
+                        }
+                    }
                 }
             }
         },

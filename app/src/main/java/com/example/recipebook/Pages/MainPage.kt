@@ -130,7 +130,11 @@ fun MainPage(
                 horizontalAlignment = Alignment.End,
                 modifier = Modifier.fillMaxSize()
             ) {
-                SearchPage(onSearch = {})
+                SearchPage(
+                    search = viewModel.searchResult.value,
+                    onSearch = { viewModel.searchRecipe(it) },
+                    onSelect = { Onclick(it) }
+                )
             }
         }
     }
