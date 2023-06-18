@@ -11,7 +11,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.AddCircleOutline
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -25,28 +27,24 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.recipebook.CustomComposes.AnimatedSelector
 import com.example.recipebook.CustomComposes.CustomNumberPicker
-import com.example.recipebook.CustomComposes.ImageDropDown
 import com.example.recipebook.CustomComposes.CustomTextField
+import com.example.recipebook.CustomComposes.ImageDropDown
 import com.example.recipebook.R
+import com.example.recipebook.data.MainViewModel
+import com.example.recipebook.model.Recipe
 
-@Preview(showBackground = true)
 @Composable
-fun AddPage() {
-
-    var name by remember { mutableStateOf("") }
-    var time by remember { mutableStateOf("") }
-    val items = remember { mutableListOf<String>() }
-    var serving by remember { mutableIntStateOf(1) }
-    var timeType by remember { mutableStateOf("Minutes") }
+fun AddPage(
+    viewModel: MainViewModel,
+    newRecipe: Recipe?
+) {
     var newItem by remember { mutableStateOf(false) }
     var step by remember { mutableStateOf(false) }
     val steps = remember { mutableListOf<String>() }
-    val hardness = remember { mutableStateOf("Beginner") }
     val levels = listOf("Beginner", "Medium", "Hard")
     var image by remember { mutableIntStateOf(R.drawable.burger) }
 
@@ -68,26 +66,47 @@ fun AddPage() {
             Spacer(modifier = Modifier.weight(0.1f))
             ImageDropDown { image = it }
         }
-        CustomTextField(holderValue = "Name") { name = it }
+        CustomTextField(
+            holderValue = "Name",
+            onDone = {
+                viewModel.setnewRecipie(name = "name", value = it)
+            }
+        )
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            CustomTextField(holderValue = "Time", onDone = { time = it }, modifier = Modifier.width(200.dp))
+            CustomTextField(
+                holderValue = "Time",
+                onDone = { viewModel.setnewRecipie("time",it) } ,
+                modifier = Modifier.width(200.dp)
+            )
             Spacer(modifier = Modifier.width(20.dp))
-            AnimatedSelector(items = listOf("Minutes", "Hours")){ timeType = it }
+            AnimatedSelector(
+                items = listOf("Minutes", "Hours"),
+                onSelect = { viewModel.setnewRecipie("timeType", it)  }
+            )
         }
-        AnimatedSelector(items = levels){ hardness.value = it }
+        AnimatedSelector(
+            items = levels,
+            onSelect = { viewModel.setnewRecipie("level", it) }
+        )
         Spacer(modifier = Modifier.height(10.dp))
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             Text(text = "servings", fontSize = 20.sp)
             Spacer(modifier = Modifier.width(50.dp))
-            CustomNumberPicker{ serving = it }
+            CustomNumberPicker(onSelect = { viewModel.setnewRecipie("servings", it.toString())})
         }
         Spacer(modifier = Modifier.height(10.dp))
         Text(text = "Items:", fontSize = 20.sp)
-        items.forEach { item ->
-            CustomTextField(value1 = item) { items[items.indexOf(it)] = it }
+        newRecipe?.items?.forEach { item ->
+            Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                Text(text = item.first, fontWeight = FontWeight.Bold, modifier = Modifier.weight(0.1f))
+                Text(text = item.second,fontWeight = FontWeight.Bold, modifier = Modifier.weight(0.1f))
+                IconButton(onClick = { viewModel.deleteItem(item) }) {
+                    Icon(imageVector = Icons.Default.Delete, contentDescription = null)
+                }
+            }
         }
         if (!newItem) {
             IconButton(onClick = { newItem = true }) {
@@ -98,22 +117,41 @@ fun AddPage() {
                 )
             }
         } else {
-            CustomTextField(holderValue = "Item") {
-                items.add(it)
-                newItem = false
+            Row(
+                Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                CustomTextField(
+                    holderValue = "Item",
+                    modifier = Modifier.weight(0.1f),
+                    onDone = {
+                        viewModel.setnewRecipie("itemName", it)
+                    }
+                )
+                CustomTextField(
+                    holderValue = "Qty",
+                    modifier = Modifier.weight(0.1f),
+                    onDone = {
+                        viewModel.setnewRecipie("itemQty", it)
+                    }
+                )
+                IconButton(onClick = {
+                    viewModel.addItems()
+                    newItem = false
+                }) {
+                    Icon(imageVector = Icons.Default.Add, contentDescription = null, modifier = Modifier.weight(0.1f))
+                }
             }
         }
 
         Text(text = "Steps", fontSize = 20.sp)
-        steps.forEach {
+        newRecipe?.procedure?.forEach {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = "Step ${steps.indexOf(it) + 1}")
-                CustomTextField(value1 = it) {
-                    steps[steps.indexOf(it)] = it
-                }
+                Text(text = "Step ${newRecipe.procedure.indexOf(it) + 1}")
+                CustomTextField(value1 = it, onDone =  { steps[steps.indexOf(it)] = it } )
             }
         }
         if (!step) {
@@ -129,10 +167,23 @@ fun AddPage() {
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = "Step ${steps.size + 1}", fontSize = 20.sp)
-                CustomTextField {
-                    steps.add(it)
-                    step = false
+                Text(
+                    text = "Step ${(newRecipe?.procedure?.size ?: 0) + 1}",
+                    fontSize = 20.sp,
+                    modifier = Modifier.weight(0.1f)
+                )
+                CustomTextField(
+                    onDone = { viewModel.setnewRecipie("step", it) },
+                    modifier = Modifier.weight(0.3f)
+                )
+                IconButton(
+                    modifier = Modifier.weight(0.1f),
+                    onClick = {
+                        viewModel.addStep()
+                        step = false
+                    }
+                ) {
+                    Icon(imageVector = Icons.Default.Add, contentDescription = null)
                 }
             }
         }

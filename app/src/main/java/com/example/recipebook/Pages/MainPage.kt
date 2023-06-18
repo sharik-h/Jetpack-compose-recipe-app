@@ -121,6 +121,8 @@ fun MainPage(
             modifier = Modifier.fillMaxSize()
         ) {
             AddRecipe(
+                viewModel = viewModel,
+                newRecipe = newRecipe,
                 recipe = {},
                 top = { isAddOpen.value = it }
             )
