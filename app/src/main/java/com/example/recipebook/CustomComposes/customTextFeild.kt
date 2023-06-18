@@ -1,6 +1,5 @@
 package com.example.recipebook.CustomComposes
 
-import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -33,7 +32,10 @@ fun CustomTextField(
     TextField(
         value = value,
         modifier = modifier,
-        onValueChange = { value = it },
+        onValueChange = {
+            value = it
+            onDone(it)
+                        },
         enabled = enabled,
         textStyle = TextStyle(
             fontSize = size.sp,
@@ -53,7 +55,5 @@ fun CustomTextField(
             }
         },
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-        keyboardActions = KeyboardActions(onDone = { onDone(value) }
-        )
     )
 }
