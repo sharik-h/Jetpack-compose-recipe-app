@@ -3,6 +3,7 @@ package com.example.recipebook.data
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.recipebook.model.FetchResult
 import com.example.recipebook.model.Recipe
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -40,7 +41,15 @@ class MainViewModel @Inject constructor(
 
     private fun getAllRecipes() {
         viewModelScope.launch {
-            recipies.value = repo.getAllRecipe()
+            val result = repo.getAllRecipe()
+            when(result){
+                is FetchResult.Success -> {
+                    recipies.value = result.data
+                }
+                is FetchResult.Error -> {
+                    exceptoins.value = result.message
+                }
+            }
         }
     }
 

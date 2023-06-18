@@ -17,8 +17,10 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.recipebook.Pages.ViewRecipe
 import com.example.recipebook.Pages.MainPage
+import com.example.recipebook.data.MainViewModel
 import com.example.recipebook.ui.theme.RecipeBookTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -35,6 +37,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
+                    val viewModel = hiltViewModel<MainViewModel>()
 
                     var openBottomSheet by rememberSaveable { mutableStateOf(false) }
                     val skipPartiallyExpanded by remember { mutableStateOf(false) }
@@ -43,7 +46,8 @@ class MainActivity : ComponentActivity() {
                         skipPartiallyExpanded = skipPartiallyExpanded
                     )
                     Column(Modifier.fillMaxSize()) {
-                        MainPage(){
+                        MainPage(viewModel){
+                            viewModel.viewRecipe(it)
                             scope.launch { bottomSheetState.expand() }.invokeOnCompletion {
                                 if (bottomSheetState.isVisible) {
                                     openBottomSheet = true

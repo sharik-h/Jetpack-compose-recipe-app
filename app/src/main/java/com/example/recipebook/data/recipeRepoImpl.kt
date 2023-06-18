@@ -1,8 +1,10 @@
 package com.example.recipebook.data
 
+import com.example.recipebook.model.FetchResult
 import com.example.recipebook.model.Recipe
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.net.ConnectException
 import javax.inject.Inject
 
 class recipeRepoImpl @Inject constructor(
@@ -14,9 +16,13 @@ class recipeRepoImpl @Inject constructor(
         }
     }
 
-    override suspend fun getAllRecipe(): List<Recipe> {
+    override suspend fun getAllRecipe(): FetchResult {
        return withContext(Dispatchers.IO) {
-            api.getAllRecipe()
+           try {
+               FetchResult.Success(api.getAllRecipe())
+           }catch (e: ConnectException){
+               FetchResult.Error(e.message.toString())
+           }
         }
     }
 
