@@ -65,7 +65,7 @@ class MainActivity : ComponentActivity() {
                                 },
                                 sheetState = bottomSheetState
                             ) {
-                                ViewRecipe() {
+                                ViewRecipe(viewModel.viewRecipe.value) {
                                     scope.launch { bottomSheetState.hide() }.invokeOnCompletion {
                                         if (!bottomSheetState.isVisible) {
                                             openBottomSheet = false

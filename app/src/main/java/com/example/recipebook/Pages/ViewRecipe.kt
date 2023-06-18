@@ -1,5 +1,6 @@
 package com.example.recipebook.Pages
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -31,17 +32,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.recipebook.model.Recipe
 
 @OptIn(ExperimentalMaterial3Api::class)
-//@Preview(showBackground = true)
 @Composable
-fun ViewRecipe(onclick: () -> Unit) {
-
-    val ingrediants = mapOf("coffee powder" to "1 teaSpoon", "water" to "1/2 cup", "sugar" to "1 teaSpoon", "milk" to "1/2 cup")
-    val procedure = makeCoffee()
+fun ViewRecipe(
+    recipe: Recipe?,
+    onclick: () -> Unit
+) {
 
     Column(Modifier.fillMaxSize()) {
         TopAppBar(
@@ -63,7 +65,11 @@ fun ViewRecipe(onclick: () -> Unit) {
         Column(modifier = Modifier
             .fillMaxSize()
             .padding(20.dp)) {
-            Text(text = "Homemade Waffle", fontSize = 40.sp, fontWeight = FontWeight.Bold)
+            Row(Modifier.fillMaxWidth()) {
+                Image(painter = painterResource(id = recipe!!.img.toInt()), contentDescription = null)
+                Spacer(modifier = Modifier.width(10.dp))
+                Text(text = recipe.name, fontSize = 40.sp, fontWeight = FontWeight.Bold)
+            }
             Spacer(modifier = Modifier.height(30.dp))
 
             Row {
@@ -79,7 +85,7 @@ fun ViewRecipe(onclick: () -> Unit) {
                 ) {
                     Icon(imageVector = Icons.Outlined.Timer, contentDescription = "",modifier = Modifier.size(35.dp))
                     Spacer(modifier = Modifier.height(5.dp))
-                    Text(text = "39 min", fontSize = 15.sp, fontWeight = FontWeight.Bold)
+                    Text(text = recipe?.time.toString(), fontSize = 15.sp, fontWeight = FontWeight.Bold)
                 }
                 Column(
                     modifier = Modifier
@@ -101,7 +107,7 @@ fun ViewRecipe(onclick: () -> Unit) {
                             .size(35.dp),
                         contentAlignment = Alignment.Center
                     ){
-                        Text(text = "2", fontSize = 20.sp, fontWeight = FontWeight.Bold,)
+                        Text(text = recipe?.serving.toString(), fontSize = 20.sp, fontWeight = FontWeight.Bold,)
                     }
                     Spacer(modifier = Modifier.height(5.dp))
                     Text(text = "Serving", fontSize = 15.sp, fontWeight = FontWeight.Bold)
@@ -112,27 +118,42 @@ fun ViewRecipe(onclick: () -> Unit) {
                         .padding(5.dp)
                         .height(120.dp)
                         .clip(RoundedCornerShape(20))
-                        .background(color = Color(0xFF9FC6D3)),
+                        .background(
+                            color = when (recipe?.level) {
+                                "begginer" -> {
+                                    Color(0xFF9FD3A4)
+                                }
+
+                                "medium" -> {
+                                    Color(0xFFD3CC9F)
+                                }
+
+                                else -> {
+                                    Color(0xFFD39FA7)
+                                }
+                            }
+                        ),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
                 ) {
                     // condition for different level and icons according to it is needed
+
                     Icon(imageVector = Icons.Default.Face, contentDescription = "", modifier = Modifier.size(35.dp))
                     Spacer(modifier = Modifier.height(5.dp))
-                    Text(text = "Beginner", fontSize = 15.sp, fontWeight = FontWeight.Bold)
+                    Text(text = recipe?.level.toString(), fontSize = 15.sp, fontWeight = FontWeight.Bold)
                 }
             }
 
             Text(text = "Ingrediants", fontSize = 25.sp, fontWeight = FontWeight.Bold)
-            ingrediants.forEach {
+            recipe?.items?.forEach {
                 Row(modifier = Modifier.fillMaxWidth()) {
-                    Text(text = it.key, fontSize = 20.sp)
+                    Text(text = it.first, fontSize = 20.sp)
                     Spacer(modifier = Modifier.weight(0.1f))
-                    Text(text = it.value, fontSize = 20.sp)
+                    Text(text = it.second, fontSize = 20.sp)
                 }
             }
             Text(text = "Steps", fontSize = 25.sp, fontWeight = FontWeight.Bold)
-            procedure.forEach {
+            recipe!!.procedure.forEach {
                 Spacer(modifier = Modifier.height(20.dp))
                 Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                     Box(
@@ -141,7 +162,7 @@ fun ViewRecipe(onclick: () -> Unit) {
                             .background(color = Color(0xFF9FC6D3), shape = CircleShape),
                         contentAlignment = Alignment.Center
                     ) {
-                        Text(text = "${procedure.indexOf(it) +  1}", color = Color.White, fontSize = 20.sp)
+                        Text(text = "${it.indexOf(it) +  1}", color = Color.White, fontSize = 20.sp)
                     }
                     Spacer(modifier = Modifier.width(10.dp))
                     Text(text = it, fontSize = 20.sp)
@@ -149,17 +170,4 @@ fun ViewRecipe(onclick: () -> Unit) {
             }
         }
     }
-}
-
-fun makeCoffee(): List<String> {
-    val steps = mutableListOf<String>()
-
-    steps.add("Grind coffee beans.")
-    steps.add("Boil water.")
-    steps.add("Add ground coffee to water.")
-    steps.add("Let coffee steep for 4 minutes.")
-    steps.add("Pour coffee into a cup.")
-    steps.add("Enjoy your coffee!")
-
-    return steps
 }
