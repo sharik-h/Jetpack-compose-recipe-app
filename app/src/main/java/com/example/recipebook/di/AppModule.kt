@@ -1,13 +1,13 @@
 package com.example.recipebook.di
 
 import com.example.recipebook.data.recipeApi
-import com.example.recipebook.data.recipeRepo
 import com.example.recipebook.data.recipeRepoImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
 import javax.inject.Singleton
 
@@ -19,6 +19,7 @@ class AppModule {
     @Singleton
     fun providesApi(): recipeApi {
         return Retrofit.Builder()
+            .addConverterFactory(GsonConverterFactory.create())
             .baseUrl("http://localhost:8080")
             .build()
             .create()
