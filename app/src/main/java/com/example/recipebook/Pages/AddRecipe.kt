@@ -56,7 +56,8 @@ fun AddRecipe(
                 FloatingActionButton(
                     onClick = {
                         if (viewModel.validateInput()){
-                            // send the data to server
+                            viewModel.createRecipe()
+                            viewModel.clearData()
                             top(false)
                             state = false
                         }else{

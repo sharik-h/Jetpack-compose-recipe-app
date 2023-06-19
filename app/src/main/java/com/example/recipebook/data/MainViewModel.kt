@@ -40,6 +40,7 @@ class MainViewModel @Inject constructor(
                 "servings" -> it.value = it.value.copy(serving = value)
                 "level" -> it.value = it.value.copy(level = value)
                 "timeType" -> it.value = it.value.copy(timeType = value)
+                "image" -> it.value = it.value.copy(image = value)
                 "itemName" -> itemName.value = value
                 "itemQty" -> itemQty.value = value
                 "step" -> step.value = value
@@ -67,17 +68,9 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private fun createRecipe() {
-        newReicpe.value?.let {
-            val map = mapOf(
-                "name" to it.name,
-                "time" to it.time,
-                "procedure" to it.procedure,
-                "items" to it.items
-            )
-            viewModelScope.launch {
-                repo.addRecipe(map)
-            }
+    fun createRecipe() {
+        viewModelScope.launch {
+            repo.addRecipe(newReicpe.value)
         }
     }
 

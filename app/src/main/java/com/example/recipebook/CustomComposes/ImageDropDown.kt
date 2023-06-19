@@ -26,12 +26,12 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun ImageDropDown(
-    onclick: (Int) -> Unit
+    onclick: (String) -> Unit
 ) {
 
     var open by remember { mutableStateOf(false) }
     val images = images()
-    var selectedImage by remember { mutableIntStateOf(images.random()) }
+    var selectedImage by remember { mutableIntStateOf(images.random().second) }
     Surface(
         shape = RoundedCornerShape(30),
         shadowElevation = 3.dp
@@ -51,12 +51,12 @@ fun ImageDropDown(
             images.forEach {
                 DropdownMenuItem(
                     text = {
-                        Image(painter = painterResource(id = it), contentDescription = null)
+                        Image(painter = painterResource(id = it.second), contentDescription = null)
                     },
                     onClick = {
                         open = false
-                        selectedImage = it
-                        onclick(it)
+                        selectedImage = it.second
+                        onclick(it.first)
                     }
                 )
             }

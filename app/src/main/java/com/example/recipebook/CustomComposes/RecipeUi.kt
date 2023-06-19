@@ -29,7 +29,7 @@ import com.example.recipebook.R
 
 @Composable
 fun RecipeUi(
-    img: Painter,
+    img: Int,
     name: String,
     time: String,
     onclick: () -> Unit
@@ -57,7 +57,7 @@ fun RecipeUi(
                 .background(Color.White)
         ) {
             Image(
-                painter = painterResource(id = pics.random()),
+                painter = painterResource(id = img),
                 contentDescription = "",
                 modifier = Modifier.size(45.dp)
             )

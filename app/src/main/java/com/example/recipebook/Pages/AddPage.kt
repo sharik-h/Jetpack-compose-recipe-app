@@ -64,7 +64,7 @@ fun AddPage(
                 fontWeight = FontWeight.Bold
             )
             Spacer(modifier = Modifier.weight(0.1f))
-            ImageDropDown { image = it }
+            ImageDropDown { viewModel.setnewRecipie(name = "image", value = it) }
         }
         CustomTextField(
             holderValue = "Name",

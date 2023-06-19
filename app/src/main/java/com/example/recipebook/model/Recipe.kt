@@ -9,5 +9,5 @@ data class Recipe(
     var procedure: MutableList<String> = mutableListOf(),
     var timeType: String = "minutes",
     var items: MutableList<Pair<String, String>> = mutableListOf(),
-    var img: String = ""
+    var image: String = ""
 )

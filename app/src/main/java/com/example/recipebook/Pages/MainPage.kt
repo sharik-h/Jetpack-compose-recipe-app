@@ -71,7 +71,7 @@ fun MainPage(
                     ) {
                         items(items = recipies){
                             RecipeUi(
-                                img = painterResource(id = it.img.toInt()),
+                                img = getImgWtihName(it.image) ?: R.drawable.tea,
                                 name = it.name,
                                 time = it.time,
                                 onclick = { Onclick(it.id) }
