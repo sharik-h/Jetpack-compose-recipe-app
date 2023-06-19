@@ -44,7 +44,6 @@ fun AddPage(
 ) {
     var newItem by remember { mutableStateOf(false) }
     var step by remember { mutableStateOf(false) }
-    val steps = remember { mutableListOf<String>() }
     val levels = listOf("Beginner", "Medium", "Hard")
     var image by remember { mutableIntStateOf(R.drawable.burger) }
 
@@ -151,7 +150,7 @@ fun AddPage(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(text = "Step ${newRecipe.procedure.indexOf(it) + 1}")
-                CustomTextField(value1 = it, onDone =  { steps[steps.indexOf(it)] = it } )
+                CustomTextField(value1 = it, onDone =  {} )
             }
         }
         if (!step) {
