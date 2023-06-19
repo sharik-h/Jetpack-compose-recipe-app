@@ -22,7 +22,7 @@ class AppModule {
             .addConverterFactory(GsonConverterFactory.create())
             .baseUrl("http://localhost:8080")
             .build()
-            .create()
+            .create(recipeApi::class.java)
     }
 
     @Provides
