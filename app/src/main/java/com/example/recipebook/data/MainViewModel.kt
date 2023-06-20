@@ -19,7 +19,7 @@ class MainViewModel @Inject constructor(
         private set
     var newReicpe = mutableStateOf(Recipe())
         private set
-    var newReicpe = MutableLiveData<Recipe>()
+    var viewRecipe = MutableLiveData<Recipe>()
         private set
     var exceptoins = mutableStateOf("")
     var itemName = mutableStateOf("")
