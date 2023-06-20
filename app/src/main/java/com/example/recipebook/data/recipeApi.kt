@@ -12,7 +12,7 @@ interface recipeApi {
     @GET("/getRecipe")
     suspend fun getRecipe(@Query("items") item: String): List<Recipe>
 
-    @GET("/geRecipe")
+    @GET("/getRecipes")
     suspend fun getAllRecipe(): List<Recipe>
 
     @DELETE("/deleteRecipe")
