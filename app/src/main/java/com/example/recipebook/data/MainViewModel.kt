@@ -15,7 +15,7 @@ class MainViewModel @Inject constructor(
     private val repo: recipeRepoImpl
 ): ViewModel() {
 
-    var recipies = MutableLiveData<List<Recipe>>()
+    var recipies: MutableLiveData<List<Recipe>> = MutableLiveData()
         private set
     var newReicpe = mutableStateOf(Recipe())
         private set

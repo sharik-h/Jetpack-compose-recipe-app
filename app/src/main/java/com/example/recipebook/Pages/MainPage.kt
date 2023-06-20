@@ -18,6 +18,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -29,6 +30,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.recipebook.CustomComposes.RecipeUi
+import com.example.recipebook.CustomComposes.getImgWtihName
 import com.example.recipebook.R
 import com.example.recipebook.data.MainViewModel
 
@@ -42,7 +44,7 @@ fun MainPage(
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     val lazyListState = rememberLazyListState()
     val isAddOpen = remember { mutableStateOf(false) }
-    val recipies = viewModel.recipies.value
+    val recipies = viewModel.recipies.observeAsState(initial = emptyList())
     val newRecipe = viewModel.newReicpe.value
 
     Box(Modifier.fillMaxSize()) {
@@ -69,7 +71,7 @@ fun MainPage(
                             .padding(paddingValue)
                             .nestedScroll(scrollBehavior.nestedScrollConnection)
                     ) {
-                        items(items = recipies){
+                        items(items = recipies.value){
                             RecipeUi(
                                 img = getImgWtihName(it.image) ?: R.drawable.tea,
                                 name = it.name,
