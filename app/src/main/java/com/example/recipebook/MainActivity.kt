@@ -65,11 +65,19 @@ class MainActivity : ComponentActivity() {
                                 },
                                 sheetState = bottomSheetState
                             ) {
-                                ViewRecipe(viewModel.viewRecipe.value) {
+                                ViewRecipe(viewModel.viewRecipe.value!!) {
                                     scope.launch { bottomSheetState.hide() }.invokeOnCompletion {
                                         if (!bottomSheetState.isVisible) {
                                             openBottomSheet = false
                                         }
+                                    }
+                                    when(it){
+                                        "Edit" -> {
+                                        }
+                                        "Delete" -> {
+                                            viewModel.deleteRecipe(viewModel.viewRecipe.value!!.id)
+                                        }
+                                        else -> { }
                                     }
                                 }
                             }

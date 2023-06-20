@@ -43,23 +43,23 @@ import com.example.recipebook.model.Recipe
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ViewRecipe(
-    recipe: Recipe?,
-    onclick: () -> Unit
+    recipe: Recipe,
+    onclick: (String) -> Unit
 ) {
 
     Column(Modifier.fillMaxSize()) {
         TopAppBar(
             title = {},
             actions = {
-                IconButton(onClick = { /*TODO*/ }) {
+                IconButton(onClick = { onclick("Edit") }) {
                     Icon(imageVector = Icons.Outlined.Edit, contentDescription = "")
                 }
-                IconButton(onClick = { /*TODO*/ }) {
+                IconButton(onClick = { onclick("Delete") }) {
                     Icon(imageVector = Icons.Outlined.DeleteOutline, contentDescription = "")
                 }
             },
             navigationIcon = {
-                IconButton(onClick = { onclick() }) {
+                IconButton(onClick = { onclick("Close") }) {
                     Icon(imageVector = Icons.Default.ArrowBack, contentDescription ="")
                 }
             }

@@ -16,7 +16,9 @@ interface recipeApi {
     suspend fun getAllRecipe(): List<Recipe>
 
     @DELETE("/deleteRecipe")
-    suspend fun deleteRecipe(id: String)
+    suspend fun deleteRecipe(
+        @Query("id")id: String
+    )
 
     @POST("/insert")
     suspend fun addNewRecipe(
