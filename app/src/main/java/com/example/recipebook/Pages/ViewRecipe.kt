@@ -36,6 +36,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.recipebook.CustomComposes.getImgWtihName
+import com.example.recipebook.R
 import com.example.recipebook.model.Recipe
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -66,7 +68,7 @@ fun ViewRecipe(
             .fillMaxSize()
             .padding(20.dp)) {
             Row(Modifier.fillMaxWidth()) {
-                Image(painter = painterResource(id = recipe!!.img.toInt()), contentDescription = null)
+                Image(painter = painterResource(id = getImgWtihName(recipe.image) ?: R.drawable.tea), contentDescription = null)
                 Spacer(modifier = Modifier.width(10.dp))
                 Text(text = recipe.name, fontSize = 40.sp, fontWeight = FontWeight.Bold)
             }
@@ -85,7 +87,7 @@ fun ViewRecipe(
                 ) {
                     Icon(imageVector = Icons.Outlined.Timer, contentDescription = "",modifier = Modifier.size(35.dp))
                     Spacer(modifier = Modifier.height(5.dp))
-                    Text(text = recipe?.time.toString(), fontSize = 15.sp, fontWeight = FontWeight.Bold)
+                    Text(text = "${recipe?.time} ${recipe?.timeType}", fontSize = 15.sp, fontWeight = FontWeight.Bold)
                 }
                 Column(
                     modifier = Modifier
@@ -120,11 +122,11 @@ fun ViewRecipe(
                         .clip(RoundedCornerShape(20))
                         .background(
                             color = when (recipe?.level) {
-                                "begginer" -> {
+                                "Beginner" -> {
                                     Color(0xFF9FD3A4)
                                 }
 
-                                "medium" -> {
+                                "Medium" -> {
                                     Color(0xFFD3CC9F)
                                 }
 
