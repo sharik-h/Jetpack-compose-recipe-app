@@ -4,7 +4,7 @@ data class Recipe(
     var id: String = "",
     var name: String = "",
     var time: String = "",
-    var level: String = "beginner",
+    var level: String = "Beginner",
     var serving: String = "1",
     var procedure: MutableList<String> = mutableListOf(),
     var timeType: String = "minutes",
