@@ -35,7 +35,6 @@ fun AddRecipe(
     top: (Boolean) -> Unit,
     recipe:(Recipe) -> Unit
 ) {
-    var state by remember { mutableStateOf(false) }
     var confirmState by remember { mutableStateOf(false) }
     val coroutine = rememberCoroutineScope()
     val context = LocalContext.current
@@ -59,11 +58,11 @@ fun AddRecipe(
                             viewModel.createRecipe()
                             viewModel.clearData()
                             top(false)
-                            state = false
+                            viewModel.addScreenExpanded.value = false
                         }else{
                             if(viewModel.nothingInputed() || confirmState){
                                 top(false)
-                                state = false
+                                viewModel.addScreenExpanded.value = false
                                 viewModel.clearData()
                                 confirmState = false
                             }else{
@@ -96,13 +95,13 @@ fun AddRecipe(
         inactiveContent = {
             FloatingActionButton(
                 onClick = {
-                    state = true
+                    viewModel.expandAddScreen()
 
                     top(true) },
             ) {
                 Icon(imageVector = Icons.Default.Add, contentDescription = "")
             }
         },
-        states = state
+        states = viewModel.addScreenExpanded.value
     )
 }

@@ -63,10 +63,14 @@ fun AddPage(
                 fontWeight = FontWeight.Bold
             )
             Spacer(modifier = Modifier.weight(0.1f))
-            ImageDropDown { viewModel.setnewRecipie(name = "image", value = it) }
+            ImageDropDown(
+                selected = newRecipe?.image,
+                onclick = { viewModel.setnewRecipie(name = "image", value = it) }
+            )
         }
         CustomTextField(
             holderValue = "Name",
+            value1 = newRecipe?.name ?: "",
             onDone = {
                 viewModel.setnewRecipie(name = "name", value = it)
             }
@@ -77,24 +81,30 @@ fun AddPage(
         ) {
             CustomTextField(
                 holderValue = "Time",
+                value1 = newRecipe?.time ?: "",
                 onDone = { viewModel.setnewRecipie("time",it) } ,
                 modifier = Modifier.width(200.dp)
             )
             Spacer(modifier = Modifier.width(20.dp))
             AnimatedSelector(
                 items = listOf("Minutes", "Hours"),
+                select = newRecipe?.timeType,
                 onSelect = { viewModel.setnewRecipie("timeType", it)  }
             )
         }
         AnimatedSelector(
             items = levels,
+            select = newRecipe?.level,
             onSelect = { viewModel.setnewRecipie("level", it) }
         )
         Spacer(modifier = Modifier.height(10.dp))
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             Text(text = "servings", fontSize = 20.sp)
             Spacer(modifier = Modifier.width(50.dp))
-            CustomNumberPicker(onSelect = { viewModel.setnewRecipie("servings", it.toString())})
+            CustomNumberPicker(
+                selected = if(newRecipe?.serving != "") newRecipe!!.serving.toInt()  else 1,
+                onSelect = { viewModel.setnewRecipie("servings", it.toString()) }
+            )
         }
         Spacer(modifier = Modifier.height(10.dp))
         Text(text = "Items:", fontSize = 20.sp)

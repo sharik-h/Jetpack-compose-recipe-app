@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun AnimatedSelector(
     items: List<String>,
+    select: String?,
     onSelect: (String) -> Unit
 ) {
 
@@ -34,6 +35,11 @@ fun AnimatedSelector(
 
     var tempBefore by remember { mutableFloatStateOf(0.0f) }
     var tempAfter by remember { mutableFloatStateOf((0.1 * (len - 1)).toFloat()) }
+    if (select != ""){
+        tempBefore = (0.1 * items.indexOf(select)).toFloat()
+        tempAfter =
+            (0.1 * (items.lastIndex - (items.indexOf(select)))).toFloat()
+    }
     val beforeSelection by animateFloatAsState(
         targetValue = tempBefore,
         keyframes { durationMillis = 300 }
@@ -51,7 +57,7 @@ fun AnimatedSelector(
         shadowElevation = 3.dp
     ) {
         Row(Modifier.fillMaxSize()) {
-            if (beforeSelection != 0.0f) {
+            if (beforeSelection > 0.0f) {
                 Box(
                     Modifier
                         .fillMaxHeight()

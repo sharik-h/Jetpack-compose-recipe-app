@@ -28,10 +28,11 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun CustomNumberPicker(
+    selected: Int,
     onSelect: (Int) -> Unit
 ) {
 
-    var number by remember { mutableIntStateOf(1) }
+    var number by remember { mutableIntStateOf(selected!!) }
 
     Surface(
         shadowElevation = 2.dp,

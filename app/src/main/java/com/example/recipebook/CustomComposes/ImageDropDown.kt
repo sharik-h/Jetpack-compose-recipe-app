@@ -26,12 +26,16 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun ImageDropDown(
+    selected: String?,
     onclick: (String) -> Unit
 ) {
 
     var open by remember { mutableStateOf(false) }
     val images = images()
     var selectedImage by remember { mutableIntStateOf(images.random().second) }
+    if (!selected.isNullOrEmpty() ){
+        selectedImage = getImgWtihName(selected)!!
+    }
     Surface(
         shape = RoundedCornerShape(30),
         shadowElevation = 3.dp

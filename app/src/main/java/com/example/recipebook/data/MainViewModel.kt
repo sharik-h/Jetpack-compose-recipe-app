@@ -26,8 +26,13 @@ class MainViewModel @Inject constructor(
     var itemName = mutableStateOf("")
     var itemQty = mutableStateOf("")
     var step = mutableStateOf("")
+    var addScreenExpanded = mutableStateOf(false)
     init {
         getAllRecipes()
+    }
+
+    fun setNewRecipe(){
+        newReicpe.value = viewRecipe.value!!
     }
 
     fun setnewRecipie(name: String, value: String, recipe: Recipe? = null){
@@ -145,5 +150,9 @@ class MainViewModel @Inject constructor(
             it.value = it.value.copy(level = "")
             it.value = it.value.copy(timeType = "")
         }
+    }
+
+    fun expandAddScreen() {
+        addScreenExpanded.value = true
     }
 }

@@ -73,6 +73,8 @@ class MainActivity : ComponentActivity() {
                                     }
                                     when(it){
                                         "Edit" -> {
+                                            viewModel.setNewRecipe()
+                                            viewModel.expandAddScreen()
                                         }
                                         "Delete" -> {
                                             viewModel.deleteRecipe(viewModel.viewRecipe.value!!.id)
