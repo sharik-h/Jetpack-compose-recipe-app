@@ -87,17 +87,10 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private fun updateRecipe(id: String) {
+    fun updateRecipe() {
         newReicpe.value?.let {
-            val map = mapOf(
-                "name" to it.name,
-                "time" to it.time,
-                "procedure" to it.procedure,
-                "items" to it.items,
-                "id" to id
-            )
             viewModelScope.launch {
-//                repo.updateRecipe(map)
+                repo.updateRecipe(it)
             }
         }
     }
@@ -154,5 +147,13 @@ class MainViewModel @Inject constructor(
 
     fun expandAddScreen() {
         addScreenExpanded.value = true
+    }
+
+    fun performOnRecipe() {
+        if (newReicpe.value.id != ""){
+            updateRecipe()
+        }else{
+            createRecipe()
+        }
     }
 }

@@ -34,7 +34,15 @@ interface recipeApi {
 
     @POST("/updateRecipe")
     suspend fun updateRecipe(
-        @QueryMap options: Map<String, String>
+        @Query("id")id: String,
+        @Query("name")name: String,
+        @Query("time")time: String,
+        @Query("timeType")timeType: String,
+        @Query("levels")levels: String,
+        @Query("servings")servings: String,
+        @Query("image")image: String,
+        @Query("items")items: Map<String, String>,
+        @Query("procedure")procedure: List<String>
     )
 
 }

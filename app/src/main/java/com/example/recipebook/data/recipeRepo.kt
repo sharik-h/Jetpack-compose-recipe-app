@@ -7,6 +7,6 @@ interface recipeRepo {
     suspend fun getRecipe(items: String): List<Recipe>
     suspend fun getAllRecipe(): FetchResult
     suspend fun addRecipe(recipe: Recipe)
-    suspend fun updateRecipe(recipe: Map<String, String>)
+    suspend fun updateRecipe(recipe: Recipe)
     suspend fun deleteRecipe(id: String)
 }

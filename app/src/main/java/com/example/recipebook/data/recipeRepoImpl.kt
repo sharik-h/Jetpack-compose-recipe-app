@@ -41,9 +41,19 @@ class recipeRepoImpl @Inject constructor(
         }
     }
 
-    override suspend fun updateRecipe(recipe: Map<String, String>) {
+    override suspend fun updateRecipe(recipe: Recipe) {
         withContext(Dispatchers.IO) {
-            api.updateRecipe(recipe)
+            api.updateRecipe(
+                id = recipe.id,
+                name = recipe.name,
+                time = recipe.time,
+                timeType = recipe.timeType,
+                levels = recipe.level,
+                servings = recipe.serving,
+                image = recipe.image,
+                items = recipe.items.toMap(),
+                procedure = recipe.procedure
+            )
         }
     }
 

@@ -55,7 +55,7 @@ fun AddRecipe(
                 FloatingActionButton(
                     onClick = {
                         if (viewModel.validateInput()){
-                            viewModel.createRecipe()
+                            viewModel.performOnRecipe()
                             viewModel.clearData()
                             top(false)
                             viewModel.addScreenExpanded.value = false
