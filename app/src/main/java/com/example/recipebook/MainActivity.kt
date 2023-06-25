@@ -53,6 +53,7 @@ class MainActivity : ComponentActivity() {
                                     openBottomSheet = true
                                 }
                             }
+                            viewModel.clearSearch()
                         }
                         if(openBottomSheet){
                             ModalBottomSheet(

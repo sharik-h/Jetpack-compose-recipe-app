@@ -40,6 +40,7 @@ fun MainPage(
 ) {
 
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
+    val searchResult = viewModel.searchResult.observeAsState()
     val lazyListState = rememberLazyListState()
     val recipies = viewModel.recipies.observeAsState(initial = emptyList())
     val newRecipe = viewModel.newReicpe.value
@@ -132,7 +133,7 @@ fun MainPage(
                 modifier = Modifier.fillMaxSize()
             ) {
                 SearchPage(
-                    search = viewModel.searchResult.value,
+                    search = searchResult.value,
                     onSearch = { viewModel.searchRecipe(it) },
                     onSelect = { Onclick(it) }
                 )

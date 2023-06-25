@@ -19,31 +19,32 @@ import androidx.compose.ui.graphics.Color
 import com.example.recipebook.CustomComposes.Bubble
 import com.example.recipebook.CustomComposes.HistoryItem
 import com.example.recipebook.CustomComposes.SearchItem
+import com.example.recipebook.model.Recipe
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchPage(
-    search: Map<String, String>? = null,
+    search: List<Recipe>? = null,
     onSearch: (String) -> Unit,
     onSelect: (String) -> Unit
 ) {
 
     val srch = remember { mutableStateOf("") }
-    val searchHistory = remember { mutableListOf<String>() }
+    val searchHistory = remember { mutableListOf<Pair<String, String>>() }
     var state by remember { mutableStateOf(false) }
 
     Bubble(
         activeContent = {
             SearchBar(
                 query = srch.value,
-                onQueryChange = { srch.value = it },
+                onQueryChange = {
+                    srch.value = it
+                    onSearch(it)
+                },
                 active = true,
                 onActiveChange = {  },
                 placeholder = { Text(text = "Search") },
-                onSearch = {
-                    onSearch(it)
-                    searchHistory.add(it)
-                },
+                onSearch = { onSearch(it) },
                 leadingIcon = {
                     Icon(painter = painterResource(id = R.drawable.search_icon_gray), contentDescription = "")
                 },
@@ -60,15 +61,25 @@ fun SearchPage(
                     }
                 }
             ) {
-                if (srch.value == ""){
+                if (srch.value.isEmpty()){
                     searchHistory.reversed().forEach { history ->
-                        HistoryItem(value = history) { srch.value = history }
+                        HistoryItem(
+                            value = history.second,
+                            onClick = {
+                                state = false
+                                onSelect(history.first)
+                                srch.value = ""
+                            },
+                            onSelect = { srch.value = history.second }
+                        )
                     }
                 }else{
                     search?.forEach {
-                        SearchItem(value = it.value) {
-                            onSelect(it.key)
+                        SearchItem(value = it.name) {
                             state = false
+                            if(!searchHistory.contains(Pair(it.id, it.name))) searchHistory.add(Pair(it.id,it.name))
+                            srch.value = ""
+                            onSelect(it.id)
                         }
                     }
                 }

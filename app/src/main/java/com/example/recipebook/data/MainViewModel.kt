@@ -15,7 +15,7 @@ class MainViewModel @Inject constructor(
     private val repo: recipeRepoImpl
 ): ViewModel() {
 
-    val searchResult = MutableLiveData<Map<String, String>>()
+    var searchResult = MutableLiveData<List<Recipe>>()
     var recipies: MutableLiveData<List<Recipe>> = MutableLiveData()
         private set
     var newReicpe = mutableStateOf(Recipe())
@@ -68,11 +68,6 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun getRecipe() {
-        viewModelScope.launch {
-            recipies.value = repo.getRecipe(items.value ?: "")
-        }
-    }
 
     fun createRecipe() {
         viewModelScope.launch {
@@ -100,9 +95,18 @@ class MainViewModel @Inject constructor(
     }
 
     private fun getRecipe(id: String): Recipe {
-        return recipies.value!!.filter { it.id == id }.first()
+        return recipies.value!!.first{ it.id == id }
     }
 
+    fun searchRecipe(srch: String) {
+        searchResult.value = if (srch == ""){
+            null
+        }else {
+            recipies.value?.filter {
+                it.name.contains(srch)
+            }
+        }
+    }
     fun addStep() {
         if (step.value != "") {
             newReicpe.value?.procedure?.add(step.value)
@@ -155,5 +159,9 @@ class MainViewModel @Inject constructor(
         }else{
             createRecipe()
         }
+    }
+
+    fun clearSearch() {
+        searchResult.value = null
     }
 }

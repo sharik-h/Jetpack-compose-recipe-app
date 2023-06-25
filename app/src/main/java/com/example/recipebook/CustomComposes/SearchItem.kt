@@ -3,6 +3,8 @@ package com.example.recipebook.CustomComposes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
@@ -19,8 +21,10 @@ fun SearchItem(
     onclick: () -> Unit
 ) {
     Row(modifier = Modifier
-        .padding(all = 14.dp)
         .clickable { onclick() }
+        .fillMaxWidth()
+        .height(64.dp)
+        .padding(all = 14.dp)
     ) {
         Icon(imageVector = Icons.Default.OpenInFull, contentDescription = null)
         Spacer(modifier = Modifier.width(10.dp))
