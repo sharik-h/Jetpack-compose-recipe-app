@@ -54,7 +54,7 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private fun getAllRecipes() {
+    fun getAllRecipes() {
         viewModelScope.launch {
             val result = repo.getAllRecipe()
             when(result){
