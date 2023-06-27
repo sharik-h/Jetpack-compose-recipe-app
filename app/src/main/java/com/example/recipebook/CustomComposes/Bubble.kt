@@ -27,24 +27,29 @@ fun Bubble(
     var state by remember { mutableStateOf(false) }
     var tempRadius by remember { mutableIntStateOf(0) }
     var tempSize by remember { mutableStateOf(0.dp) }
-    val radius by animateIntAsState(targetValue = tempRadius, keyframes { durationMillis = 300 })
-    val height by animateDpAsState(targetValue = tempSize, keyframes { durationMillis = 300 })
+    var tempPadd by remember { mutableStateOf(10.dp) }
+    val radius by animateIntAsState(targetValue = tempRadius, keyframes { durationMillis = 480 })
+    val height by animateDpAsState(targetValue = tempSize, keyframes { durationMillis = 480 })
+    val padd by animateDpAsState(targetValue = tempPadd, keyframes { durationMillis = 480 })
 
     if (states){
         state = states
         tempRadius = 0
         tempSize = 1000.dp
+        tempPadd = 0.dp
     }else{
         if (radius == 50) {
             state = states
         }
         tempRadius = 50
         tempSize = 0.dp
+        tempPadd = 10.dp
     }
 
 
     val modifier = if (state){
         Modifier
+            .padding(padd)
             .size(height)
             .clip(RoundedCornerShape(radius))
     }else{
