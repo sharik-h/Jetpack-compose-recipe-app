@@ -60,7 +60,7 @@ fun MainPage(
                     }
                 }
             ) { paddingValue ->
-                if (recipies != null) {
+                if (!recipies.value.isNullOrEmpty()) {
                     LazyColumn(
                         verticalArrangement = Arrangement.spacedBy(10.dp),
                         state = lazyListState,
