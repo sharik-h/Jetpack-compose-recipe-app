@@ -4,7 +4,6 @@ import com.example.recipebook.model.FetchResult
 import com.example.recipebook.model.Recipe
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.net.ConnectException
 import javax.inject.Inject
 
 class recipeRepoImpl @Inject constructor(
@@ -20,7 +19,7 @@ class recipeRepoImpl @Inject constructor(
        return withContext(Dispatchers.IO) {
            try {
                FetchResult.Success(api.getAllRecipe())
-           }catch (e: ConnectException){
+           }catch (e: Exception){
                FetchResult.Error(e.message.toString())
            }
         }

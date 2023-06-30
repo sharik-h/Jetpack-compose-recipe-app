@@ -32,6 +32,7 @@ fun RecipeUi(
     img: Int,
     name: String,
     time: String,
+    timeType: String,
     onclick: () -> Unit
 ) {
 
@@ -65,7 +66,7 @@ fun RecipeUi(
         Spacer(modifier = Modifier.width(10.dp))
         Column {
             Text(text = name, fontWeight = FontWeight.Bold, fontSize = 30.sp)
-            Text(text = time, fontWeight = FontWeight.Light, fontSize = 15.sp)
+            Text(text = "$time  $timeType", fontWeight = FontWeight.Light, fontSize = 15.sp)
         }
         Spacer(modifier = Modifier.weight(0.1f))
         IconButton(onClick = { onclick() }) {

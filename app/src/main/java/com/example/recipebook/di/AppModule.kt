@@ -19,7 +19,7 @@ class AppModule {
     fun providesApi(): recipeApi {
         return Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl("http://localhost:8080")
+            .baseUrl("http://192.168.30.7:8080/")
             .build()
             .create(recipeApi::class.java)
     }

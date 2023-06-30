@@ -10,9 +10,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -52,6 +55,14 @@ fun MainPage(
                     Box {
                         LargeTopAppBar(
                             title = { Text(text = "Recipe", color = Color.Black) },
+                            actions = {
+                                IconButton(
+                                    onClick = { viewModel.getAllRecipes() },
+                                    modifier = Modifier.padding(end = 50.dp, top = 5.dp)
+                                ) {
+                                    Icon(imageVector = Icons.Default.Refresh, contentDescription = "")
+                                }
+                            },
                             scrollBehavior = scrollBehavior,
                             colors = TopAppBarDefaults.mediumTopAppBarColors(
                                 containerColor = Color.Transparent,
@@ -74,6 +85,7 @@ fun MainPage(
                                 img = getImgWtihName(it.image) ?: R.drawable.tea,
                                 name = it.name,
                                 time = it.time,
+                                timeType = it.timeType,
                                 onclick = { Onclick(it.id) }
                             )
                         }
